@@ -2,10 +2,15 @@ import 'package:ecommarce_app/models/shoe.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class ShoeTile extends StatelessWidget {
-  ShoeTile({super.key, required this.shoe});
+class ShoeTile extends StatefulWidget {
+  ShoeTile({super.key, required this.shoe, required this.onTap});
   Shoe shoe;
+  void Function()? onTap;
+  @override
+  State<ShoeTile> createState() => _ShoeTileState();
+}
 
+class _ShoeTileState extends State<ShoeTile> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -18,7 +23,7 @@ class ShoeTile extends StatelessWidget {
             // shoe pic
 
             Image(
-              image: AssetImage(shoe.imagePath),
+              image: AssetImage(widget.shoe.imagePath),
               height: 250,
               width: 250,
             ),
@@ -28,7 +33,7 @@ class ShoeTile extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(left: 20, right: 20),
               child: Text(
-                shoe.description,
+                widget.shoe.description,
                 style: TextStyle(fontSize: 15, color: Colors.grey),
               ),
             ),
@@ -44,11 +49,11 @@ class ShoeTile extends StatelessWidget {
                     child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(shoe.name,
+                          Text(widget.shoe.name,
                               style: TextStyle(
                                   fontWeight: FontWeight.bold, fontSize: 20)),
                           Text(
-                            shoe.price,
+                            widget.shoe.price,
                             style: TextStyle(color: Colors.grey[600]),
                           ),
                           SizedBox(
@@ -65,7 +70,12 @@ class ShoeTile extends StatelessWidget {
                             topLeft: Radius.circular(10),
                             bottomRight: Radius.circular(10)),
                       ),
-                      child: Icon(Icons.add, color: Colors.white))
+                      child: InkWell(
+                          onTap: () {
+                            // add to cart
+                            widget.onTap!();
+                          },
+                          child: Icon(Icons.add, color: Colors.white)))
                 ]),
           ],
         ));
